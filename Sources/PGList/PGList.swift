@@ -49,11 +49,16 @@ public class PGList<T, U: PGListDelegate>: UIView,
         fatalError("init(coder:) has not been implemented")
     }
     
-    public convenience init(_ requestData: String) {
+    public convenience init(_ url: String) {
         self.init(frame: CGRect.zero)
         
-        AF.request("https://httpbin.org/get").response { response in
-            debugPrint(response)
+        AF.request(url).response { response in
+            switch response.result {
+            case .success(let data):
+                print(data)
+            case .failure(let error):
+                print(error)
+            }
         }
     }
     
