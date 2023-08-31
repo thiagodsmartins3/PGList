@@ -10,12 +10,12 @@
 import UIKit.UIView
 
 // MARK: DELEGATE PROTOCOL
-@objc public protocol PGListDelegate: AnyObject {
-    @objc optional func pgListTableView(_ tableView: UITableView,
+public protocol PGListDelegate: AnyObject {
+    func pgListTableView(_ tableView: UITableView,
                           cellForRowAt indexPath: IndexPath) -> UITableViewCell
 }
 
-public class PGList<T>: UIView,
+public class PGList<T, U: PGListDelegate>: UIView,
                         UITableViewDelegate,
                         UITableViewDataSource {
 
@@ -32,7 +32,7 @@ public class PGList<T>: UIView,
     
     private var pgListData: [T] = []
     private var customCellIdentifier = ""
-    public weak var delegate: PGListDelegate?
+    public weak var delegate: U?
     
     
     // MARK: FUNCTIONS
@@ -86,7 +86,7 @@ public class PGList<T>: UIView,
                 return UITableViewCell()
             }
             
-            return delegate.pgListTableView!(tableView, cellForRowAt: indexPath)
+            return delegate.pgListTableView(tableView, cellForRowAt: indexPath)
         } else {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: PGListTableViewCell.identifier, for: indexPath) as? PGListTableViewCell else {
                 return UITableViewCell()
