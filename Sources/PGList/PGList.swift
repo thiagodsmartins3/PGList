@@ -8,6 +8,7 @@
 #if canImport(UIKit)
 
 import UIKit.UIView
+import Alamofire
 
 // MARK: DELEGATE PROTOCOL
 @objc public protocol PGListDelegate: AnyObject {
@@ -50,6 +51,10 @@ public class PGList<T, U: PGListDelegate>: UIView,
     
     convenience init(_ requestData: String) {
         self.init(frame: CGRect.zero)
+        
+        AF.request("https://httpbin.org/get").response { response in
+            debugPrint(response)
+        }
     }
     
     private func setupViews() {
